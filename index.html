@@ -1,511 +1,579 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Duck Dream Studios — Jogos Mobile Indie</title>
-  <meta name="description" content="Hub oficial da Duck Dream Studios. Jogos mobile indie feitos com alma por Coca 69643." />
-  <meta property="og:title" content="Duck Dream Studios" />
-  <meta property="og:description" content="Jogos mobile indie feitos com alma — um pixel de cada vez" />
-  <meta property="og:image" content="https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #0f0f13; color: #fff; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; min-height: 100vh; }
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: #111; }
-    ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 5px; }
-    a { text-decoration: none; color: inherit; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Duck Dream Studios</title>
+<meta name="description" content="Hub oficial de jogos mobile da Duck Dream Studios"/>
+<meta property="og:title" content="Duck Dream Studios"/>
+<meta property="og:image" content="https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png"/>
+<link rel="icon" href="https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png"/>
+<style>
+  :root {
+    --bg:       #0d0d12;
+    --surface:  #13131c;
+    --surface2: #1a1a27;
+    --border:   #21213a;
+    --accent:   #f5c518;
+    --accent2:  #ff7c2a;
+    --text:     #e8e8f0;
+    --muted:    #5a5a7a;
+    --radius:   14px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
+  img { display: block; }
+  button { border: none; background: none; cursor: pointer; font-family: inherit; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 18px rgba(255,215,0,0.25); } 50% { box-shadow: 0 0 48px rgba(255,215,0,0.55); } }
-    @keyframes slideUp { from { transform:translateY(100%); opacity:0; } to { transform:translateY(0); opacity:1; } }
-    @keyframes spin { to { transform: rotate(360deg); } }
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes slideUp  { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes ripple   { to   { transform:scale(4); opacity:0; } }
+  @keyframes shimmer  { 0%   { background-position:-400px 0; } 100% { background-position:400px 0; } }
+  @keyframes glow     { 0%,100%{box-shadow:0 0 20px rgba(245,197,24,.2);} 50%{box-shadow:0 0 40px rgba(245,197,24,.45);} }
+  @keyframes spin     { to { transform: rotate(360deg); } }
 
-    /* ─── TOPBAR ─── */
-    .topbar {
-      background: #0a0a0e;
-      border-bottom: 1px solid #1e1e2e;
-      padding: 0 20px;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky; top: 0; z-index: 100;
-    }
-    .topbar-brand { display: flex; align-items: center; gap: 10px; }
-    .topbar-logo { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #ffd700; }
-    .topbar-name { font-size: 15px; font-weight: 800; color: #ffd700; letter-spacing: 0.5px; }
-    .topbar-badge { background: #1e1e2e; border: 1px solid #2a2a3e; border-radius: 20px; padding: 4px 12px; font-size: 11px; color: #666; }
+  /* ── TOP APP BAR ── */
+  .appbar {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(13,13,18,.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 18px;
+  }
+  .appbar-left { display:flex; align-items:center; gap:10px; }
+  .appbar-logo {
+    width:32px; height:32px; border-radius:50%;
+    border:2px solid var(--accent);
+    animation: glow 3s ease infinite;
+    object-fit: cover;
+  }
+  .appbar-title { font-size:15px; font-weight:800; color:var(--accent); letter-spacing:.3px; }
+  .appbar-chip {
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:20px; padding:4px 11px;
+    font-size:10px; color:var(--muted); letter-spacing:.5px;
+  }
 
-    /* ─── HERO ─── */
-    .hero {
-      background: linear-gradient(170deg, #12122a 0%, #0f0f13 60%);
-      padding: 40px 20px 32px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,215,0,0.07) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-logo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #ffd700; margin-bottom: 14px; animation: glowPulse 3s infinite; position: relative; }
-    .hero-title { font-size: 24px; font-weight: 900; color: #ffd700; text-shadow: 0 0 30px rgba(255,215,0,0.4); margin-bottom: 6px; }
-    .hero-sub { font-size: 13px; color: #555; margin-bottom: 24px; }
-    .hero-stats { display: flex; gap: 0; justify-content: center; background: #16161f; border: 1px solid #1e1e2e; border-radius: 16px; overflow: hidden; display: inline-flex; }
-    .stat { padding: 12px 22px; text-align: center; border-right: 1px solid #1e1e2e; }
-    .stat:last-child { border-right: none; }
-    .stat-num { font-size: 20px; font-weight: 800; color: #ffd700; }
-    .stat-label { font-size: 9px; color: #444; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(160deg, #15152d 0%, var(--bg) 65%);
+    padding: 36px 20px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; top:-60px; left:50%; transform:translateX(-50%);
+    width:500px; height:500px;
+    background: radial-gradient(circle, rgba(245,197,24,.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-avatar {
+    width:76px; height:76px; border-radius:50%;
+    border:3px solid var(--accent);
+    margin:0 auto 14px;
+    object-fit:cover;
+    animation: glow 3s ease infinite;
+  }
+  .hero-name {
+    font-size:22px; font-weight:900;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom:6px;
+  }
+  .hero-tagline { font-size:12px; color:var(--muted); margin-bottom:22px; }
+  .hero-stats {
+    display: inline-flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .stat { padding:11px 20px; text-align:center; border-right:1px solid var(--border); }
+  .stat:last-child { border-right:none; }
+  .stat-n { font-size:18px; font-weight:800; color:var(--accent); line-height:1; }
+  .stat-l { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:1.4px; margin-top:3px; }
 
-    /* ─── SEARCH BAR ─── */
-    .search-wrap { padding: 16px 16px 0; max-width: 860px; margin: 0 auto; }
-    .search-box {
-      width: 100%;
-      background: #16161f;
-      border: 1px solid #1e1e2e;
-      border-radius: 12px;
-      padding: 11px 16px 11px 40px;
-      color: #fff;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23444'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: 12px center;
-      background-size: 18px;
-    }
-    .search-box:focus { border-color: rgba(255,215,0,0.3); }
-    .search-box::placeholder { color: #444; }
+  /* ── SEARCH ── */
+  .search-section { padding: 16px 16px 0; max-width: 900px; margin: 0 auto; }
+  .search-field {
+    width:100%; height:46px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0 16px 0 44px;
+    color:var(--text); font-size:14px;
+    outline:none; transition: border-color .2s, box-shadow .2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%235a5a7a' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 13px center;
+    background-size: 18px;
+  }
+  .search-field:focus {
+    border-color: rgba(245,197,24,.4);
+    box-shadow: 0 0 0 3px rgba(245,197,24,.08);
+  }
+  .search-field::placeholder { color:var(--muted); }
 
-    /* ─── LAYOUT ─── */
-    .layout { max-width: 860px; margin: 0 auto; padding: 0 16px 80px; }
+  /* ── MAIN LAYOUT ── */
+  .main { max-width:900px; margin:0 auto; padding:0 16px 100px; }
 
-    /* ─── SECTION LABEL ─── */
-    .section-label {
-      font-size: 10px; font-weight: 700; color: #ffd700;
-      letter-spacing: 2px; text-transform: uppercase;
-      margin: 24px 0 12px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .section-label::after { content: ''; flex: 1; height: 1px; background: #1e1e2e; }
+  /* ── SECTION LABEL ── */
+  .slabel {
+    display:flex; align-items:center; gap:10px;
+    font-size:10px; font-weight:700; color:var(--accent);
+    letter-spacing:2px; text-transform:uppercase;
+    margin: 24px 0 14px;
+  }
+  .slabel::after { content:''; flex:1; height:1px; background:var(--border); }
 
-    /* ─── FEATURED CARD ─── */
-    .featured-card {
-      background: linear-gradient(135deg, #1a1a30 0%, #0e2040 100%);
-      border: 1px solid rgba(255,215,0,0.2);
-      border-radius: 18px;
-      padding: 20px;
-      cursor: pointer;
-      transition: all 0.25s;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      animation: fadeUp 0.4s ease;
-    }
-    .featured-card:hover { transform: translateY(-3px); border-color: rgba(255,215,0,0.45); box-shadow: 0 16px 48px rgba(255,215,0,0.12); }
-    .featured-img { width: 88px; height: 88px; border-radius: 16px; border: 2px solid #ffd700; flex-shrink: 0; object-fit: cover; box-shadow: 0 0 24px rgba(255,215,0,0.25); }
-    .featured-info { flex: 1; min-width: 0; }
-    .featured-title { font-size: 18px; font-weight: 800; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .featured-desc { font-size: 12px; color: #999; line-height: 1.6; margin-bottom: 10px; }
-    .featured-tags { display: flex; gap: 5px; flex-wrap: wrap; }
-    .tag { padding: 3px 9px; border-radius: 20px; font-size: 10px; }
-    .tag-gold { background: rgba(255,215,0,0.1); color: #ffd700; border: 1px solid rgba(255,215,0,0.2); }
-    .tag-dim { background: rgba(255,255,255,0.05); color: #666; }
-    .featured-arrow { color: #ffd700; font-size: 20px; flex-shrink: 0; }
+  /* ── FEATURED ── */
+  .featured {
+    background: linear-gradient(135deg, #18183a 0%, #0e1a30 100%);
+    border: 1px solid rgba(245,197,24,.22);
+    border-radius: 18px;
+    display: flex; gap:16px; align-items:center;
+    padding: 18px;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s, border-color .2s;
+    animation: fadeUp .4s ease both;
+    position:relative; overflow:hidden;
+  }
+  .featured::before {
+    content:'';
+    position:absolute; top:-40px; right:-40px;
+    width:180px; height:180px;
+    background: radial-gradient(circle, rgba(245,197,24,.08) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .featured:hover { transform:translateY(-3px); border-color:rgba(245,197,24,.5); box-shadow:0 16px 48px rgba(0,0,0,.5); }
+  .featured-img {
+    width:86px; height:86px; border-radius:16px;
+    border:2.5px solid var(--accent);
+    object-fit:cover; flex-shrink:0;
+    box-shadow:0 0 24px rgba(245,197,24,.25);
+  }
+  .featured-body { flex:1; min-width:0; }
+  .featured-title { font-size:17px; font-weight:800; margin-bottom:5px; }
+  .featured-desc { font-size:11.5px; color:#888; line-height:1.6; margin-bottom:9px; }
+  .featured-row { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  .chip-status { border-radius:20px; padding:3px 10px; font-size:9.5px; font-weight:700; letter-spacing:.3px; }
+  .chip-tag { background:rgba(245,197,24,.08); color:rgba(245,197,24,.8); border:1px solid rgba(245,197,24,.18); border-radius:20px; padding:3px 9px; font-size:9.5px; }
+  .featured-arrow { font-size:22px; color:var(--accent); flex-shrink:0; }
 
-    /* ─── FILTERS ─── */
-    .filters { display: flex; gap: 7px; flex-wrap: wrap; margin: 20px 0 14px; }
-    .filter-btn {
-      background: #16161f; color: #666;
-      border: 1px solid #1e1e2e;
-      border-radius: 20px; padding: 7px 15px;
-      font-size: 11px; cursor: pointer; transition: all 0.2s;
-      white-space: nowrap;
-    }
-    .filter-btn.active { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; font-weight: 700; border-color: transparent; }
-    .filter-btn:hover:not(.active) { border-color: rgba(255,215,0,0.25); color: #bbb; }
+  /* ── FILTER PILLS ── */
+  .filters { display:flex; gap:7px; flex-wrap:wrap; margin:18px 0 14px; }
+  .fpill {
+    background:var(--surface); color:var(--muted);
+    border:1px solid var(--border);
+    border-radius:20px; padding:7px 15px;
+    font-size:11px; transition:all .18s;
+    white-space:nowrap; position:relative; overflow:hidden;
+  }
+  .fpill.on { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#000; font-weight:700; border-color:transparent; }
+  .fpill:hover:not(.on) { border-color:rgba(245,197,24,.3); color:var(--text); }
 
-    /* ─── GAMES GRID ─── */
-    .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  /* ── GRID ── */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:13px; }
 
-    /* ─── GAME CARD (APK Vision style) ─── */
-    .game-card {
-      background: #16161f;
-      border: 1px solid #1e1e2e;
-      border-radius: 14px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.22s;
-      animation: fadeUp 0.3s ease both;
-      display: flex;
-      flex-direction: column;
-    }
-    .game-card:hover { transform: translateY(-4px); border-color: rgba(255,215,0,0.3); box-shadow: 0 10px 36px rgba(0,0,0,0.4); }
+  /* ── GAME CARD ── */
+  .card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden; cursor:pointer;
+    transition:transform .22s, box-shadow .22s, border-color .22s;
+    animation: fadeUp .3s ease both;
+    display:flex; flex-direction:column;
+    position:relative;
+  }
+  .card:hover { transform:translateY(-5px); border-color:rgba(245,197,24,.28); box-shadow:0 14px 44px rgba(0,0,0,.5); }
+  .card-cover { width:100%; height:128px; object-fit:cover; background:var(--surface2); flex-shrink:0; }
+  .card-cover-ph {
+    width:100%; height:128px;
+    background:linear-gradient(135deg,#0f1028,#1a1a30);
+    display:flex; align-items:center; justify-content:center;
+    font-size:46px; flex-shrink:0;
+  }
+  .card-body { padding:12px 13px; display:flex; gap:11px; align-items:flex-start; flex:1; }
+  .card-icon { width:50px; height:50px; border-radius:11px; border:1.5px solid var(--border); object-fit:cover; flex-shrink:0; }
+  .card-icon-ph { width:50px; height:50px; border-radius:11px; background:var(--surface2); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .card-info { flex:1; min-width:0; }
+  .card-title { font-size:13.5px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; }
+  .card-genre { font-size:10px; color:var(--muted); margin-bottom:5px; }
+  .card-desc { font-size:11px; color:#777; line-height:1.55; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .card-foot { padding:0 13px 13px; display:flex; align-items:center; justify-content:space-between; }
+  .btn-dl {
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#000; font-weight:800; font-size:11px;
+    border-radius:9px; padding:7px 15px;
+    display:flex; align-items:center; gap:5px;
+    transition:transform .15s, filter .15s;
+  }
+  .btn-dl:hover { transform:scale(1.05); filter:brightness(1.1); }
+  .btn-soon { font-size:10px; color:#333; }
+  .card-size { position:absolute; top:8px; right:8px; background:rgba(0,0,0,.65); border-radius:6px; padding:2px 7px; font-size:9px; color:#888; }
 
-    .card-banner {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-      display: block;
-      background: #0f1020;
-    }
-    .card-banner-placeholder {
-      width: 100%; height: 130px;
-      background: linear-gradient(135deg, #0f1020, #1a1a30);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 48px;
-    }
+  /* ── EMPTY ── */
+  .empty { text-align:center; padding:64px 20px; color:var(--muted); }
+  .empty-icon { font-size:44px; margin-bottom:12px; }
 
-    .card-body { padding: 12px 14px 14px; display: flex; gap: 12px; align-items: flex-start; flex: 1; }
-    .card-icon-wrap { flex-shrink: 0; }
-    .card-icon { width: 52px; height: 52px; border-radius: 12px; border: 1.5px solid #2a2a3a; object-fit: cover; }
-    .card-icon-placeholder { width: 52px; height: 52px; border-radius: 12px; background: #1e1e2e; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-    .card-info { flex: 1; min-width: 0; }
-    .card-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .card-genre { font-size: 10px; color: #555; margin-bottom: 6px; }
-    .card-desc { font-size: 11px; color: #888; line-height: 1.5; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  /* ── MODAL ── */
+  .overlay {
+    position:fixed; inset:0; z-index:500;
+    background:rgba(0,0,0,.88);
+    display:none; align-items:flex-end; justify-content:center;
+  }
+  .overlay.open { display:flex; }
+  .sheet {
+    background:var(--surface);
+    border-radius:22px 22px 0 0;
+    width:100%; max-width:580px;
+    max-height:92vh; overflow-y:auto;
+    border:1px solid var(--border); border-bottom:none;
+    animation: slideUp .26s cubic-bezier(.34,1.3,.64,1);
+  }
+  .sheet-banner { width:100%; height:190px; object-fit:cover; border-radius:22px 22px 0 0; display:block; }
+  .sheet-banner-ph { width:100%; height:190px; border-radius:22px 22px 0 0; background:linear-gradient(135deg,#0f1028,#1a1a35); display:flex; align-items:center; justify-content:center; font-size:80px; }
+  .sheet-body { padding:20px 22px 36px; }
+  .sheet-head { display:flex; gap:14px; align-items:flex-start; margin-bottom:18px; }
+  .sheet-icon { width:70px; height:70px; border-radius:15px; border:2.5px solid var(--accent); object-fit:cover; flex-shrink:0; margin-top:-42px; position:relative; box-shadow:0 6px 24px rgba(0,0,0,.6); }
+  .sheet-icon-ph { width:70px; height:70px; border-radius:15px; background:var(--surface2); display:flex; align-items:center; justify-content:center; font-size:34px; flex-shrink:0; margin-top:-42px; position:relative; border:2px solid var(--border); }
+  .sheet-title-wrap { flex:1; padding-top:8px; min-width:0; }
+  .sheet-title { font-size:19px; font-weight:800; margin-bottom:3px; }
+  .sheet-subtitle { font-size:11px; color:var(--muted); margin-bottom:7px; }
+  .sheet-close {
+    background:rgba(255,255,255,.07); border-radius:50%;
+    width:33px; height:33px; flex-shrink:0; margin-top:6px;
+    display:flex; align-items:center; justify-content:center;
+    color:#888; font-size:13px; transition:all .15s;
+  }
+  .sheet-close:hover { background:rgba(255,255,255,.14); color:#fff; }
+  .info-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:18px; }
+  .info-box { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 8px; text-align:center; }
+  .info-box-l { font-size:8.5px; color:var(--muted); text-transform:uppercase; letter-spacing:1.2px; margin-bottom:4px; }
+  .info-box-v { font-size:12.5px; font-weight:700; color:var(--text); }
+  .sheet-desc { font-size:13px; color:#999; line-height:1.85; margin-bottom:18px; }
+  .sheet-tags { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:22px; }
+  .sheet-tag { background:rgba(245,197,24,.07); color:rgba(245,197,24,.85); border:1px solid rgba(245,197,24,.18); border-radius:20px; padding:4px 12px; font-size:11px; }
+  .btn-modal-dl {
+    width:100%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#000; font-weight:800; font-size:15px;
+    border-radius:14px; padding:15px;
+    display:flex; align-items:center; justify-content:center; gap:9px;
+    transition:transform .18s, filter .18s;
+  }
+  .btn-modal-dl:hover { transform:scale(1.02); filter:brightness(1.07); }
+  .no-dl { background:var(--surface2); border:1px solid var(--border); border-radius:14px; padding:17px; text-align:center; color:#444; font-size:13px; line-height:1.7; }
 
-    .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 0 14px 12px; }
-    .status-chip {
-      border-radius: 6px; padding: 3px 8px;
-      font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
-    }
-    .card-dl-btn {
-      background: linear-gradient(135deg, #ffd700, #ffaa00);
-      color: #000; font-weight: 800; font-size: 11px;
-      border-radius: 8px; padding: 6px 14px;
-      display: flex; align-items: center; gap: 4px;
-      transition: all 0.15s;
-    }
-    .card-dl-btn:hover { transform: scale(1.05); filter: brightness(1.08); }
-    .card-dl-soon { font-size: 10px; color: #444; }
+  /* ── FOOTER ── */
+  footer { text-align:center; padding:32px 20px; border-top:1px solid var(--border); margin-top:40px; }
+  .footer-logo { width:26px; height:26px; border-radius:50%; opacity:.18; margin:0 auto 10px; }
+  .footer-text { color:#2a2a3a; font-size:11px; line-height:2.1; }
 
-    /* ─── MODAL ─── */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.9);
-      z-index: 999;
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal-sheet {
-      background: #13131e;
-      border-radius: 24px 24px 0 0;
-      width: 100%; max-width: 620px;
-      max-height: 90vh; overflow-y: auto;
-      border-top: 1px solid #1e1e2e;
-      border-left: 1px solid #1e1e2e;
-      border-right: 1px solid #1e1e2e;
-      animation: slideUp 0.28s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .modal-banner { width: 100%; height: 180px; object-fit: cover; border-radius: 24px 24px 0 0; display: block; }
-    .modal-banner-placeholder { width: 100%; height: 180px; border-radius: 24px 24px 0 0; background: linear-gradient(135deg, #0f1020, #1a1a30); display: flex; align-items: center; justify-content: center; font-size: 72px; }
-    .modal-content { padding: 20px 22px 32px; }
-    .modal-header { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
-    .modal-icon { width: 68px; height: 68px; border-radius: 14px; border: 2px solid #ffd700; flex-shrink: 0; object-fit: cover; margin-top: -40px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-    .modal-icon-placeholder { width: 68px; height: 68px; border-radius: 14px; background: #1a1a2e; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; border: 2px solid #333; margin-top: -40px; position: relative; }
-    .modal-title-wrap { flex: 1; padding-top: 6px; }
-    .modal-close { background: rgba(255,255,255,0.08); border: none; color: #888; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 6px; transition: all 0.15s; }
-    .modal-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
-    .modal-game-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-    .modal-meta { font-size: 11px; color: #555; margin-bottom: 8px; }
-    .modal-desc { font-size: 13px; color: #aaa; line-height: 1.8; margin-bottom: 18px; }
-    .modal-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; }
-    .modal-tag { background: rgba(255,215,0,0.08); color: #ffd700; border: 1px solid rgba(255,215,0,0.18); border-radius: 20px; padding: 4px 12px; font-size: 11px; }
-
-    /* info row */
-    .info-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 22px; }
-    .info-box { background: #1a1a27; border: 1px solid #1e1e2e; border-radius: 10px; padding: 10px 12px; text-align: center; }
-    .info-box-label { font-size: 9px; color: #444; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-    .info-box-val { font-size: 13px; font-weight: 700; color: #ccc; }
-
-    .modal-dl-btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      background: linear-gradient(135deg, #ffd700, #ff9500);
-      color: #000; font-weight: 800; padding: 15px; border-radius: 14px;
-      font-size: 15px; width: 100%; transition: all 0.2s;
-    }
-    .modal-dl-btn:hover { transform: scale(1.02); filter: brightness(1.08); }
-    .modal-no-dl { background: #1a1a27; border: 1px solid #1e1e2e; border-radius: 14px; padding: 16px; text-align: center; color: #444; font-size: 13px; }
-
-    /* ─── FOOTER ─── */
-    footer { text-align: center; margin-top: 60px; padding: 28px 20px; border-top: 1px solid #1e1e2e; }
-    footer img { width: 28px; border-radius: 50%; opacity: 0.2; margin-bottom: 8px; display: block; margin: 0 auto 10px; }
-    .footer-text { color: #333; font-size: 11px; line-height: 2; }
-
-    /* ─── EMPTY STATE ─── */
-    .empty { text-align: center; padding: 60px 20px; color: #444; }
-    .empty-icon { font-size: 40px; margin-bottom: 12px; }
-
-    @media (max-width: 500px) {
-      .games-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-      .card-banner, .card-banner-placeholder { height: 100px; }
-      .card-body { padding: 8px 10px 10px; gap: 8px; }
-      .card-icon { width: 42px; height: 42px; }
-      .card-icon-placeholder { width: 42px; height: 42px; }
-      .card-title { font-size: 12px; }
-      .hero-title { font-size: 20px; }
-      .featured-card { gap: 12px; }
-      .featured-img { width: 72px; height: 72px; }
-    }
-  </style>
+  /* ── RESPONSIVE ── */
+  @media(max-width:480px){
+    .grid { grid-template-columns:1fr 1fr; gap:9px; }
+    .card-cover,.card-cover-ph { height:100px; }
+    .card-body { padding:9px 10px; gap:9px; }
+    .card-icon,.card-icon-ph { width:42px; height:42px; }
+    .card-title { font-size:12px; }
+    .hero-name { font-size:20px; }
+    .featured { gap:12px; padding:14px; }
+    .featured-img { width:72px; height:72px; }
+    .featured-title { font-size:15px; }
+    .appbar-title { font-size:13px; }
+    .info-row { gap:5px; }
+    .info-box-v { font-size:11px; }
+  }
+  @media(min-width:700px){
+    .grid { grid-template-columns:repeat(3,1fr); }
+  }
+</style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<nav class="topbar">
-  <div class="topbar-brand">
-    <img src="https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png" class="topbar-logo" alt="Duck Dream Studios">
-    <span class="topbar-name">Duck Dream Studios</span>
+<!-- APP BAR -->
+<header class="appbar">
+  <div class="appbar-left">
+    <img src="https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png" class="appbar-logo" alt="DDS">
+    <span class="appbar-title">Duck Dream Studios</span>
   </div>
-  <span class="topbar-badge">🦆 Solo Dev</span>
-</nav>
+  <span class="appbar-chip">🦆 Solo Dev</span>
+</header>
 
 <!-- HERO -->
 <section class="hero">
-  <img src="https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png" class="hero-logo" alt="Duck Dream Studios">
-  <div class="hero-title">🦆 Duck Dream Studios</div>
-  <div class="hero-sub">Jogos mobile indie feitos com alma — um pixel de cada vez</div>
+  <img src="https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png" class="hero-avatar" alt="Duck Dream Studios">
+  <div class="hero-name">🦆 Duck Dream Studios</div>
+  <div class="hero-tagline">Jogos mobile indie feitos com alma — um pixel de cada vez</div>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Jogos</div></div>
-    <div class="stat"><div class="stat-num">1</div><div class="stat-label">Dev</div></div>
-    <div class="stat"><div class="stat-num" style="color:#22c55e">—</div><div class="stat-label">Lançados</div></div>
-    <div class="stat"><div class="stat-num" style="color:#3b82f6">Android</div><div class="stat-label">Plataforma</div></div>
+    <div class="stat"><div class="stat-n">5</div><div class="stat-l">Jogos</div></div>
+    <div class="stat"><div class="stat-n">1</div><div class="stat-l">Dev</div></div>
+    <div class="stat"><div class="stat-n" style="color:#22c55e">—</div><div class="stat-l">Lançados</div></div>
+    <div class="stat"><div class="stat-n" style="font-size:13px;color:#3b82f6">Android</div><div class="stat-l">Plataforma</div></div>
   </div>
 </section>
 
 <!-- SEARCH -->
-<div class="search-wrap">
-  <input class="search-box" type="text" placeholder="Buscar jogos..." oninput="handleSearch(this.value)" />
+<div class="search-section">
+  <input class="search-field" type="search" placeholder="Buscar jogos, gêneros, tags…" oninput="onSearch(this.value)">
 </div>
 
-<div class="layout">
-  <!-- FEATURED -->
-  <div class="section-label">⭐ Destaque</div>
-  <div id="featured-container"></div>
+<!-- MAIN -->
+<div class="main">
+  <div class="slabel">⭐ Destaque</div>
+  <div id="featured"></div>
 
-  <!-- FILTERS -->
+  <div class="slabel" style="margin-top:28px">🎮 Todos os Jogos</div>
   <div class="filters" id="filters"></div>
-
-  <!-- GRID -->
-  <div class="section-label">🎮 Todos os Jogos</div>
-  <div class="games-grid" id="games-grid"></div>
-  <div id="empty-state" style="display:none" class="empty">
-    <div class="empty-icon">🔍</div>
-    <div>Nenhum jogo encontrado</div>
-  </div>
+  <div class="grid" id="grid"></div>
+  <div id="empty" class="empty" style="display:none"><div class="empty-icon">🔍</div><div>Nenhum jogo encontrado</div></div>
 </div>
 
-<!-- FOOTER -->
 <footer>
-  <img src="https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png" alt="Duck">
+  <img src="https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png" class="footer-logo" alt="">
   <div class="footer-text">
     🦆 Duck Dream Studios · Fundado por Coca 69643<br>
     Solo dev · Mobile first · Feito com ❤️ e Claude Sonnet<br>
-    <span style="color:#2a2a3a">© 2026 Duck Dream Studios</span>
+    <span style="color:#1e1e2e">© 2026 Duck Dream Studios</span>
   </div>
 </footer>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal-sheet" id="modal-sheet"></div>
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="sheet" id="sheet"></div>
 </div>
 
 <script>
-const STATUS_COLORS = {
-  "Em Desenvolvimento": { bg: "rgba(245,158,11,0.15)", color: "#f59e0b", border: "rgba(245,158,11,0.3)" },
-  "Beta":               { bg: "rgba(59,130,246,0.15)", color: "#3b82f6", border: "rgba(59,130,246,0.3)" },
-  "Lançado":            { bg: "rgba(34,197,94,0.15)",  color: "#22c55e", border: "rgba(34,197,94,0.3)" },
-  "Em Breve":           { bg: "rgba(168,85,247,0.15)", color: "#a855f7", border: "rgba(168,85,247,0.3)" },
-};
-const STATUS_ICONS = { "Em Desenvolvimento":"🔧","Beta":"🧪","Lançado":"🚀","Em Breve":"⏳" };
-const EMOJI = { "the-server-room":"💾","terras-de-aldenmoor":"⚔️","convergencia":"🌀","catacumba":"💀","um-pato-e-um-sonho":"🐥" };
-
+/* ── DATA ── */
 const GAMES = [
   {
     id:1, slug:"um-pato-e-um-sonho", featured:true,
     title:"Um Pato e um Sonho",
-    genre:"Aventura / Pixel Art", status:"Em Desenvolvimento", platform:"Android",
+    genre:"Aventura / Pixel Art",
+    status:"Em Desenvolvimento",
+    platform:"Android",
+    size_mb: null,
     short_description:"A jornada de um patinho pixelado em busca do seu grande sonho.",
-    description:"Um Pato e um Sonho é um jogo mobile com alma — siga a jornada de um pato pixelado determinado a realizar seu maior sonho. Com visual charming em pixel art e gameplay pensado para mobile, é o projeto-coração da Duck Dream Studios.",
+    description:"Um Pato e um Sonho é um jogo mobile com alma — siga a jornada de um pato pixelado determinado a realizar seu maior sonho. Com visual charming em pixel art e gameplay pensado 100% para mobile, é o projeto-coração da Duck Dream Studios.",
     icon_image:"https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png",
     cover_image:"https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/149781da6_icon-512-lite.png",
-    download_url:null, tags:["pixel art","aventura","mobile","indie"]
+    apk_url: null,
+    tags:["pixel art","aventura","mobile","indie"]
   },
   {
     id:2, slug:"the-server-room", featured:false,
     title:"The Server Room",
-    genre:"Suspense / Tech", status:"Em Desenvolvimento", platform:"Android",
+    genre:"Suspense / Tech",
+    status:"Em Desenvolvimento",
+    platform:"Android",
+    size_mb: null,
     short_description:"Sobreviva ao caos digital dentro de uma sala de servidores.",
-    description:"The Server Room é um projeto mobile da Duck Dream Studios com ambientação tecnológica e atmosfera tensa. Explore os corredores sombrios de uma sala de servidores enquanto tenta sobreviver ao colapso do sistema.",
+    description:"The Server Room é um projeto mobile da Duck Dream Studios com ambientação tecnológica e atmosfera tensa. Explore corredores sombrios de servidores enquanto tenta sobreviver ao colapso total do sistema.",
     icon_image:"https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/050b5a072_generated_image.png",
     cover_image:"https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/050b5a072_generated_image.png",
-    download_url:null, tags:["suspense","tecnologia","mobile","indie"]
+    apk_url: null,
+    tags:["suspense","tecnologia","mobile","indie"]
   },
   {
     id:3, slug:"terras-de-aldenmoor", featured:false,
     title:"Terras de Aldenmoor",
-    genre:"RPG / Fantasia", status:"Em Desenvolvimento", platform:"Android",
+    genre:"RPG / Fantasia",
+    status:"Em Desenvolvimento",
+    platform:"Android",
+    size_mb: null,
     short_description:"Explore as vastas terras de um mundo de fantasia épica.",
     description:"Terras de Aldenmoor é um RPG/aventura mobile ambientado em um universo de fantasia rico em lore. Explore dungeons, enfrente criaturas míticas e descubra os segredos de um reino esquecido.",
     icon_image:"https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/91694cffc_generated_image.png",
     cover_image:"https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/91694cffc_generated_image.png",
-    download_url:null, tags:["rpg","fantasia","aventura","mobile","indie"]
+    apk_url: null,
+    tags:["rpg","fantasia","aventura","mobile","indie"]
   },
   {
     id:4, slug:"convergencia", featured:false,
     title:"Convergência",
-    genre:"Ficção Científica", status:"Em Desenvolvimento", platform:"Android",
+    genre:"Ficção Científica",
+    status:"Em Desenvolvimento",
+    platform:"Android",
+    size_mb: null,
     short_description:"Quando mundos colidem, apenas um pode prevalecer.",
     description:"Convergência é um projeto mobile misterioso da Duck Dream Studios que explora o encontro de universos paralelos. Em um futuro onde as fronteiras entre realidades se dissolvem, você é o único capaz de restaurar o equilíbrio.",
     icon_image:"https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/265f9eb86_generated_image.png",
     cover_image:"https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/265f9eb86_generated_image.png",
-    download_url:null, tags:["sci-fi","mistério","mobile","indie"]
+    apk_url: null,
+    tags:["sci-fi","mistério","mobile","indie"]
   },
   {
     id:5, slug:"catacumba", featured:false,
     title:"Catacumba",
-    genre:"Dungeon / Survival", status:"Em Desenvolvimento", platform:"Android",
+    genre:"Dungeon / Survival",
+    status:"Em Desenvolvimento",
+    platform:"Android",
+    size_mb: null,
     short_description:"Desça fundo. Sobreviva ao que habita nas profundezas.",
     description:"Catacumba é um jogo mobile de dungeon/survival da Duck Dream Studios com atmosfera sombria e gameplay desafiador. Desça pelos corredores de pedra, enfrente criaturas das profundezas e descubra o que realmente habita nas catacumbas.",
     icon_image:"https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/841718178_generated_image.png",
     cover_image:"https://media.base44.com/images/public/69bb1be95290bb1c9a2c0426/841718178_generated_image.png",
-    download_url:null, tags:["dungeon","survival","horror","mobile","indie"]
+    apk_url: null,
+    tags:["dungeon","survival","horror","mobile","indie"]
   }
 ];
 
-let currentFilter = "Todos";
-let searchQuery = "";
+const STATUS_CFG = {
+  "Em Desenvolvimento": { bg:"rgba(245,158,11,.14)", color:"#f59e0b", border:"rgba(245,158,11,.28)" },
+  "Beta":               { bg:"rgba(59,130,246,.14)", color:"#3b82f6", border:"rgba(59,130,246,.28)" },
+  "Lançado":            { bg:"rgba(34,197,94,.14)",  color:"#22c55e", border:"rgba(34,197,94,.28)"  },
+  "Em Breve":           { bg:"rgba(168,85,247,.14)", color:"#a855f7", border:"rgba(168,85,247,.28)" }
+};
+const STATUS_ICON = { "Em Desenvolvimento":"🔧","Beta":"🧪","Lançado":"🚀","Em Breve":"⏳" };
+const SLUG_EMOJI  = { "um-pato-e-um-sonho":"🐥","the-server-room":"💾","terras-de-aldenmoor":"⚔️","convergencia":"🌀","catacumba":"💀" };
 
-function statusStyle(status) {
-  const s = STATUS_COLORS[status] || { bg:"rgba(128,128,128,0.15)", color:"#888", border:"rgba(128,128,128,0.3)" };
-  return `background:${s.bg};color:${s.color};border:1px solid ${s.border}`;
+let activeFilter = "Todos";
+let searchQ = "";
+
+/* ── HELPERS ── */
+function sc(s) {
+  const c = STATUS_CFG[s] || { bg:"rgba(128,128,128,.14)", color:"#888", border:"rgba(128,128,128,.28)" };
+  return `background:${c.bg};color:${c.color};border:1px solid ${c.border}`;
+}
+function e(s){ return SLUG_EMOJI[s]||"🎮"; }
+function img(src,cls,alt,ph){
+  return src
+    ? `<img src="${src}" class="${cls}" alt="${alt}" loading="lazy" onerror="this.outerHTML='<div class=\\'${ph}\\'>${e(alt)}</div>'">`
+    : `<div class="${ph}">${e(alt)}</div>`;
 }
 
-function renderFeatured() {
-  const f = GAMES.find(g => g.featured);
-  if (!f) return;
-  document.getElementById("featured-container").innerHTML = `
-    <div class="featured-card" onclick="openModal(${f.id})">
-      <img src="${f.icon_image}" class="featured-img" alt="${f.title}" onerror="this.style.display='none'">
-      <div class="featured-info">
-        <div class="featured-title">${f.title}</div>
-        <div class="featured-desc">${f.short_description}</div>
-        <div class="featured-tags">
-          <span class="status-chip" style="${statusStyle(f.status)};border-radius:20px;padding:3px 9px;font-size:9px;font-weight:700">${STATUS_ICONS[f.status]} ${f.status}</span>
-          ${f.tags.slice(0,3).map(t=>`<span class="tag tag-gold">${t}</span>`).join("")}
-        </div>
+/* ── RENDER FEATURED ── */
+function renderFeatured(){
+  const g = GAMES.find(x=>x.featured);
+  if(!g) return;
+  document.getElementById("featured").innerHTML = `
+  <div class="featured" onclick="openModal(${g.id})">
+    ${img(g.icon_image,"featured-img",g.slug,"featured-img-ph")}
+    <div class="featured-body">
+      <div class="featured-title">${g.title}</div>
+      <div class="featured-desc">${g.short_description}</div>
+      <div class="featured-row">
+        <span class="chip-status" style="${sc(g.status)}">${STATUS_ICON[g.status]} ${g.status}</span>
+        ${g.tags.slice(0,2).map(t=>`<span class="chip-tag">${t}</span>`).join("")}
       </div>
-      <div class="featured-arrow">›</div>
-    </div>`;
+    </div>
+    <div class="featured-arrow">›</div>
+  </div>`;
 }
 
-function renderFilters() {
-  const genres = ["Todos", ...new Set(GAMES.map(g => g.genre))];
-  document.getElementById("filters").innerHTML = genres.map(g =>
-    `<button class="filter-btn${currentFilter===g?" active":""}" onclick="setFilter('${g.replace(/'/g,"\\'")}')">${g}</button>`
+/* ── RENDER FILTERS ── */
+function renderFilters(){
+  const genres = ["Todos",...new Set(GAMES.map(g=>g.genre))];
+  document.getElementById("filters").innerHTML = genres.map(gn=>
+    `<button class="fpill${activeFilter===gn?" on":""}" onclick="setFilter('${gn.replace(/'/g,"\\'")}')">
+      ${gn}
+    </button>`
   ).join("");
 }
 
-function renderGrid() {
+/* ── RENDER GRID ── */
+function renderGrid(){
   let list = GAMES;
-  if (currentFilter !== "Todos") list = list.filter(g => g.genre === currentFilter);
-  if (searchQuery) list = list.filter(g =>
-    g.title.toLowerCase().includes(searchQuery) ||
-    g.genre.toLowerCase().includes(searchQuery) ||
-    g.tags.some(t => t.toLowerCase().includes(searchQuery))
+  if(activeFilter!=="Todos") list=list.filter(g=>g.genre===activeFilter);
+  if(searchQ) list=list.filter(g=>
+    g.title.toLowerCase().includes(searchQ)||
+    g.genre.toLowerCase().includes(searchQ)||
+    g.tags.some(t=>t.toLowerCase().includes(searchQ))
   );
-
-  const empty = document.getElementById("empty-state");
-  if (!list.length) { document.getElementById("games-grid").innerHTML=""; empty.style.display="block"; return; }
-  empty.style.display = "none";
-
-  document.getElementById("games-grid").innerHTML = list.map((g, i) => `
-    <div class="game-card" style="animation-delay:${i*0.06}s" onclick="openModal(${g.id})">
-      ${g.cover_image
-        ? `<img src="${g.cover_image}" class="card-banner" alt="${g.title}" onerror="this.style.display='none'">`
-        : `<div class="card-banner-placeholder">${EMOJI[g.slug]||"🎮"}</div>`}
-      <div class="card-body">
-        ${g.icon_image
-          ? `<div class="card-icon-wrap"><img src="${g.icon_image}" class="card-icon" alt="${g.title}"></div>`
-          : `<div class="card-icon-wrap"><div class="card-icon-placeholder">${EMOJI[g.slug]||"🎮"}</div></div>`}
-        <div class="card-info">
-          <div class="card-title">${g.title}</div>
-          <div class="card-genre">${g.genre}</div>
-          <div class="card-desc">${g.short_description}</div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <span class="status-chip" style="${statusStyle(g.status)}">${STATUS_ICONS[g.status]} ${g.status}</span>
-        ${g.download_url
-          ? `<a href="${g.download_url}" class="card-dl-btn" onclick="event.stopPropagation()" target="_blank">⬇️ Baixar</a>`
-          : `<span class="card-dl-soon">Em breve</span>`}
-      </div>
-    </div>`).join("");
-}
-
-function setFilter(f) {
-  currentFilter = f;
-  renderFilters();
-  renderGrid();
-}
-
-function handleSearch(val) {
-  searchQuery = val.toLowerCase().trim();
-  renderGrid();
-}
-
-function openModal(id) {
-  const g = GAMES.find(x => x.id === id);
-  if (!g) return;
-  document.getElementById("modal-sheet").innerHTML = `
+  const empty=document.getElementById("empty");
+  const grid=document.getElementById("grid");
+  if(!list.length){ grid.innerHTML=""; empty.style.display="block"; return; }
+  empty.style.display="none";
+  grid.innerHTML=list.map((g,i)=>`
+  <div class="card" style="animation-delay:${i*.06}s" onclick="openModal(${g.id})">
     ${g.cover_image
-      ? `<img src="${g.cover_image}" class="modal-banner" alt="${g.title}">`
-      : `<div class="modal-banner-placeholder">${EMOJI[g.slug]||"🎮"}</div>`}
-    <div class="modal-content">
-      <div class="modal-header">
+      ?`<img src="${g.cover_image}" class="card-cover" alt="${g.title}" loading="lazy" onerror="this.outerHTML='<div class=\\'card-cover-ph\\'>${e(g.slug)}</div>'">`
+      :`<div class="card-cover-ph">${e(g.slug)}</div>`}
+    ${g.size_mb?`<div class="card-size">${g.size_mb} MB</div>`:""}
+    <div class="card-body">
+      ${g.icon_image
+        ?`<img src="${g.icon_image}" class="card-icon" alt="${g.title}" loading="lazy" onerror="this.outerHTML='<div class=\\'card-icon-ph\\'>${e(g.slug)}</div>'">`
+        :`<div class="card-icon-ph">${e(g.slug)}</div>`}
+      <div class="card-info">
+        <div class="card-title">${g.title}</div>
+        <div class="card-genre">${g.genre}</div>
+        <div class="card-desc">${g.short_description}</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <span class="chip-status" style="${sc(g.status)};border-radius:20px;padding:3px 9px;font-size:9px;font-weight:700">${STATUS_ICON[g.status]} ${g.status}</span>
+      ${g.apk_url
+        ?`<a href="${g.apk_url}" class="btn-dl" onclick="event.stopPropagation()" target="_blank" rel="noopener">⬇ Baixar</a>`
+        :`<span class="btn-soon">Em breve</span>`}
+    </div>
+  </div>`).join("");
+}
+
+/* ── OPEN MODAL ── */
+function openModal(id){
+  const g=GAMES.find(x=>x.id===id);
+  if(!g) return;
+  document.getElementById("sheet").innerHTML=`
+    ${g.cover_image
+      ?`<img src="${g.cover_image}" class="sheet-banner" alt="${g.title}" loading="lazy" onerror="this.outerHTML='<div class=\\'sheet-banner-ph\\'>${e(g.slug)}</div>'">`
+      :`<div class="sheet-banner-ph">${e(g.slug)}</div>`}
+    <div class="sheet-body">
+      <div class="sheet-head">
         ${g.icon_image
-          ? `<img src="${g.icon_image}" class="modal-icon" alt="${g.title}">`
-          : `<div class="modal-icon-placeholder">${EMOJI[g.slug]||"🎮"}</div>`}
-        <div class="modal-title-wrap">
-          <div class="modal-game-title">${g.title}</div>
-          <div class="modal-meta">${g.genre} · ${g.platform||"Android"}</div>
-          <span class="status-chip" style="${statusStyle(g.status)};border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;display:inline-block">${STATUS_ICONS[g.status]} ${g.status}</span>
+          ?`<img src="${g.icon_image}" class="sheet-icon" alt="${g.title}" onerror="this.outerHTML='<div class=\\'sheet-icon-ph\\'>${e(g.slug)}</div>'">`
+          :`<div class="sheet-icon-ph">${e(g.slug)}</div>`}
+        <div class="sheet-title-wrap">
+          <div class="sheet-title">${g.title}</div>
+          <div class="sheet-subtitle">${g.genre} · ${g.platform||"Android"}</div>
+          <span class="chip-status" style="${sc(g.status)};border-radius:20px;padding:3px 10px;font-size:9.5px;font-weight:700">${STATUS_ICON[g.status]} ${g.status}</span>
         </div>
-        <button class="modal-close" onclick="closeModal()">✕</button>
+        <button class="sheet-close" onclick="closeModal()">✕</button>
       </div>
-
       <div class="info-row">
-        <div class="info-box"><div class="info-box-label">Plataforma</div><div class="info-box-val">${g.platform||"Android"}</div></div>
-        <div class="info-box"><div class="info-box-label">Gênero</div><div class="info-box-val" style="font-size:11px">${g.genre.split("/")[0].trim()}</div></div>
-        <div class="info-box"><div class="info-box-label">Estúdio</div><div class="info-box-val" style="font-size:10px">Duck Dream</div></div>
+        <div class="info-box"><div class="info-box-l">Plataforma</div><div class="info-box-v">${g.platform||"Android"}</div></div>
+        <div class="info-box"><div class="info-box-l">Tamanho</div><div class="info-box-v">${g.size_mb?g.size_mb+" MB":"—"}</div></div>
+        <div class="info-box"><div class="info-box-l">Estúdio</div><div class="info-box-v" style="font-size:10px">Duck Dream</div></div>
       </div>
-
-      <div class="modal-desc">${g.description}</div>
-
-      <div class="modal-tags">${g.tags.map(t=>`<span class="modal-tag">${t}</span>`).join("")}</div>
-
-      ${g.download_url
-        ? `<a href="${g.download_url}" class="modal-dl-btn" target="_blank">⬇️ Baixar APK Grátis</a>`
-        : `<div class="modal-no-dl">🔧 Ainda em desenvolvimento — acompanhe as novidades em breve!</div>`}
+      <div class="sheet-desc">${g.description}</div>
+      <div class="sheet-tags">${g.tags.map(t=>`<span class="sheet-tag">${t}</span>`).join("")}</div>
+      ${g.apk_url
+        ?`<a href="${g.apk_url}" class="btn-modal-dl" target="_blank" rel="noopener">⬇ Baixar APK Grátis</a>`
+        :`<div class="no-dl">🔧 Ainda em desenvolvimento<br><span style="font-size:11px;color:#333">Acompanhe as novidades da Duck Dream Studios!</span></div>`}
     </div>`;
-  document.getElementById("modal").classList.add("open");
-  document.body.style.overflow = "hidden";
+  document.getElementById("overlay").classList.add("open");
+  document.body.style.overflow="hidden";
 }
 
-function closeModal() {
-  document.getElementById("modal").classList.remove("open");
-  document.body.style.overflow = "";
+function closeModal(){
+  document.getElementById("overlay").classList.remove("open");
+  document.body.style.overflow="";
 }
 
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+function setFilter(f){ activeFilter=f; renderFilters(); renderGrid(); }
+function onSearch(v){ searchQ=v.toLowerCase().trim(); renderGrid(); }
+document.addEventListener("keydown",e=>{ if(e.key==="Escape")closeModal(); });
 
-// Init
+/* ── INIT ── */
 renderFeatured();
 renderFilters();
 renderGrid();
